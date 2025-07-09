@@ -336,102 +336,18 @@
       <li>🔎 See detailed question logs and performance insights</li>
     </ul>
     <div style="margin-top: 2rem;">
-   <script type="module">
-import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
-Chatbot.init({
-    chatflowid: "85a0af1f-1c02-459e-bbaa-d43787a022da",
-    apiHost: "https://querio.onrender.com",
-    chatflowConfig: {
-        /* Chatflow Config */
-    },
-    observersConfig: {
-        /* Observers Config */
-    },
-    theme: {
-        button: {
-            backgroundColor: '#00aa55', // Match website green
-            right: 20,
-            bottom: 20,
-            size: 48,
-            dragAndDrop: true,
-            iconColor: 'white',
-            customIconSrc: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/google-messages.svg',
-            autoWindowOpen: {
-                autoOpen: true,
-                openDelay: 2,
-                autoOpenOnMobile: false
+        <script type="module">
+          import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js";
+          Chatbot.init({
+            chatflowid: "85a0af1f-1c02-459e-bbaa-d43787a022da",
+            apiHost: "https://querio.onrender.com",
+            theme: {
+              button: { backgroundColor: '#00aa55', right:20, bottom:20, size:48 },
+              tooltip: { showTooltip:true, tooltipMessage:'Hi there 👋!', tooltipBackgroundColor:'#1b5e20'},
+              chatWindow: { title:'QuestAI', welcomeMessage:'Hello! I’m QuestAI, here to help.' }
             }
-        },
-        tooltip: {
-            showTooltip: true,
-            tooltipMessage: 'Hi there 👋!',
-            tooltipBackgroundColor: '#1b5e20', // Darker green for contrast
-            tooltipTextColor: 'white',
-            tooltipFontSize: 16
-        },
-        customCSS: ``,
-        chatWindow: {
-            showTitle: true,
-            showAgentMessages: true,
-            title: 'DishyBot',
-            titleAvatarSrc: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/google-messages.svg',
-            welcomeMessage: 'Hi there! I’m Dishy, here to answer any questions you have 🌿✨',
-            errorMessage: 'Oops! Something went wrong. Please try again.',
-            backgroundColor: '#ffffff',
-            backgroundImage: '',
-            height: 500,
-            width: 320,
-            fontSize: 16,
-            starterPrompts: [
-                "What is Dishy?",
-                "How can you help my business?"
-            ],
-            starterPromptFontSize: 15,
-            clearChatOnReload: false,
-            sourceDocsTitle: 'Sources:',
-            renderHTML: true,
-            botMessage: {
-                backgroundColor: '#f7f8ff',
-                textColor: '#2a2a2a',
-                showAvatar: true,
-                avatarSrc: 'https://raw.githubusercontent.com/zahidkhawaja/langchain-chat-nextjs/main/public/parroticon.png'
-            },
-            userMessage: {
-                backgroundColor: '#00aa55', // Match button and theme green
-                textColor: '#ffffff',
-                showAvatar: true,
-                avatarSrc: 'https://raw.githubusercontent.com/zahidkhawaja/langchain-chat-nextjs/main/public/usericon.png'
-            },
-            textInput: {
-                placeholder: 'Type your question...',
-                backgroundColor: '#ffffff',
-                textColor: '#2a2a2a',
-                sendButtonColor: '#00aa55', // Match theme
-                maxChars: 50,
-                maxCharsWarningMessage: 'Please keep it under 50 characters.',
-                autoFocus: true,
-                sendMessageSound: true,
-                sendSoundLocation: 'send_message.mp3',
-                receiveMessageSound: true,
-                receiveSoundLocation: 'receive_message.mp3'
-            },
-            feedback: {
-                color: '#2a2a2a'
-            },
-            dateTimeToggle: {
-                date: true,
-                time: true
-            },
-            footer: {
-                textColor: '#2a2a2a',
-                text: 'Powered by',
-                company: 'QuestIQ',
-                companyLink: 'https://finn-oconnor1.github.io/questiq-website/#home'
-            }
-        }
-    }
-})
-</script>
+          });
+        </script>
 
 
     </div>
@@ -455,9 +371,25 @@ Chatbot.init({
     </div>
   </div>
 </section>
-<footer>
-  <p>© 2025 QuestIQ.ai | <a href="mailto:finn@questiq.ai">finn@questiq.ai</a></p>
-</footer>
+  <footer>
+    <div class="footer-content">
+      <h3>QuestIQ</h3>
+      <p>Smarter websites. Instant answers. AI that works for you 24/7.</p>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="#demo">Demo</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <p class="footer-copy">© 2025 QuestIQ — <a href="mailto:finn@questiq.ai">finn@questiq.ai</a></p>
+    </div>
+  </footer>
+
+<div class="questiq-badge">
+  ⚡ <a href="https://finn-oconnor1.github.io/questiq-website/" target="_blank">By QuestIQ</a>
+</div>
+  
 <div class="bubbles"></div>
 <script>
   const bubblesContainer = document.querySelector('.bubbles');
