@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuestIQ.ai</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #ffffff, #a8e6a3);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+      overflow-x: hidden;
+      color: #2a2a2a;
+      position: relative;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    nav {
+      position: fixed; top: 0; width: 100%; display: flex;
+      justify-content: space-between; align-items: center;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      padding: 1rem 2rem;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    nav h2 { font-weight: 700; font-size: 1.5rem; }
+    nav ul { list-style: none; display: flex; gap: 1.5rem; }
+    nav ul li a {
+      text-decoration: none; font-weight: 500; color: #2a2a2a;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover { color: #00aa55; }
+    header {
+      text-align: center;
+      padding: 25vh 2rem 10vh;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-wrapper {
+      display: inline-block;
+      position: relative;
+      padding: 2rem;
+      border-radius: 2rem;
+      overflow: hidden;
+    }
+    header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards 1s;
+    }
+    header p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards 2s;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+    .hero-svg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; opacity: 0;
+      animation: rectFadeIn 1.5s ease-out forwards 0.5s;
+    }
+    @keyframes rectFadeIn { to { opacity: 1; } }
+    section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .feature-box {
+      background: rgba(255,255,255,0.9);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+    }
+    .feature-box:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+    .feature-box h3 {
+      margin-bottom: 0.8rem;
+      font-size: 1.4rem;
+      color: #1b5e20;
+    }
+    .feature-box p {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .white-box {
+      background: rgba(255,255,255,0.95);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      margin-top: 3rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    #about .white-box {
+      background: #1b5e20;
+      color: #fff;
+    }
+    footer {
+      background: #1b5e20;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    footer a { color: #ffffff; text-decoration: underline; }
+    .bubbles {
+      position: fixed; bottom: 0; left: 0; width: 100%; height: 100%;
+      overflow: hidden; pointer-events: none; z-index: 1;
+    }
+    .bubble {
+      position: absolute; bottom: -100px;
+      border: 2px solid rgba(173,216,230,0.7);
+      background: radial-gradient(circle at 30% 30%, rgba(173,216,230,0.6), rgba(0,0,255,0.1));
+      border-radius: 50%;
+      box-shadow:
+        inset -3px -3px 10px rgba(173,216,230,0.5),
+        0 4px 15px rgba(0,0,255,0.3),
+        0 0 20px rgba(0,191,255,0.3);
+      animation: rise 20s infinite ease-in;
+      opacity: 0;
+    }
+    @keyframes rise {
+      0% { transform: translateY(0) scale(0.9); opacity: 0; }
+      10% { opacity: 0.8; }
+      100% { transform: translateY(-200vh) scale(1.4); opacity: 0; }
+    }
+    @media (max-width: 1000px) {
+      .features {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+    }
+    .contact-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .contact-box {
+      background: rgba(255,255,255,0.95);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      flex: 1 1 250px;
+      max-width: 300px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .contact-box:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+    .contact-box h3 {
+      margin-bottom: 0.8rem;
+      font-size: 1.4rem;
+      color: #1b5e20;
+    }
+    .contact-box p {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .contact-box a {
+      color: #2a2a2a;
+      text-decoration: underline;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-container img {
+      height: 40px;
+      width: auto;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .about-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .about-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .about-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+    }
+    .about-card h3 {
+      margin-bottom: 0.8rem;
+      font-size: 1.3rem;
+      color: #1b5e20;
+    }
+    .about-card p {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<script>
+  function revealOnScroll() {
+    document.querySelectorAll('.fade-in').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight - 50) {
+        el.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener('load', revealOnScroll);
+</script>
+<body>
+<nav>
+  <div class="logo-container">
+    <img src="QueryLoop_logo.png" alt="QuestIQ Logo">
+    <h2>QuestIQ.ai</h2>
+  </div>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+<header id="home">
+  <div class="hero-wrapper">
+    <h1>Smarter Websites. Instant Answers.</h1>
+    <p>Automate FAQs, engage visitors, and scale support with AI-powered agents designed for modern businesses.</p>
+    <svg class="hero-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <rect id="hero-rect" x="4" y="4" width="calc(100% - 8px)" height="calc(100% - 8px)"
+        rx="32" ry="32" fill="none" stroke-width="8" stroke="url(#grad)"/>
+      <defs>
+        <linearGradient id="grad" gradientTransform="rotate(45)">
+          <stop offset="0%" stop-color="#00aa55"/>
+          <stop offset="100%" stop-color="#a8e6a3"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</header>
+<section id="features">
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature-box">
+      <h3>AI Chatbot Integration</h3>
+      <p>Seamlessly integrate a smart assistant that works 24/7 to help your customers.</p>
+    </div>
+    <div class="feature-box">
+      <h3>Custom Knowledge Base</h3>
+      <p>Train your bot on your specific business data for precise, on-brand answers.</p>
+    </div>
+    <div class="feature-box">
+      <h3>Analytics & Insights</h3>
+      <p>Monitor conversations, uncover trends, and improve customer experience.</p>
+    </div>
+    <div class="feature-box">
+      <h3>Lightning-Fast Setup</h3>
+      <p>Launch your AI assistant in under 5 minutes, no coding required.</p>
+    </div>
+  </div>
+</section>
+<section id="about">
+  <div class="white-box fade-in">
+    <h2>What is QuestAI? 💬🚀</h2>
+    <p>QuestAI transforms your website into a smart, always-on assistant. Here's what it does:</p>
+    <div class="about-cards">
+      <div class="about-card">
+        <h3>⚡ Instant, Smart Answers</h3>
+        <p>Deliver fast, accurate responses 24/7 with human-like AI conversations trained on your own data.</p>
+      </div>
+      <div class="about-card">
+        <h3>🎯 Capture & Convert Leads</h3>
+        <p>Turn visitors into customers automatically through intelligent lead capture and qualification.</p>
+      </div>
+      <div class="about-card">
+        <h3>📊 Advanced Insights</h3>
+        <p>Analyze visitor questions and behavior to improve content, understand needs, and drive growth.</p>
+      </div>
+      <div class="about-card">
+        <h3>🔗 Seamless Integration</h3>
+        <p>Connect easily with your CRM and marketing tools for enriched data and better targeting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="demo">
+  <div class="white-box">
+    <h2>Demo 🤖</h2>
+    <p>Try our AI bot live below and experience seamless automation in action. We also offer free trials to let you test the technology before committing.</p>
+    <ul style="margin-top:1.5rem; text-align:left; max-width:700px; margin-left:auto; margin-right:auto;">
+      <li>🚀 Free trial access to test your own data</li>
+      <li>⚡ Instant setup — no technical barriers</li>
+      <li>🔎 See detailed question logs and performance insights</li>
+    </ul>
+    <div style="margin-top: 2rem;">
+   <script type="module">
+import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
+Chatbot.init({
+    chatflowid: "85a0af1f-1c02-459e-bbaa-d43787a022da",
+    apiHost: "https://querio.onrender.com",
+    chatflowConfig: {
+        /* Chatflow Config */
+    },
+    observersConfig: {
+        /* Observers Config */
+    },
+    theme: {
+        button: {
+            backgroundColor: '#00aa55', // Match website green
+            right: 20,
+            bottom: 20,
+            size: 48,
+            dragAndDrop: true,
+            iconColor: 'white',
+            customIconSrc: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/google-messages.svg',
+            autoWindowOpen: {
+                autoOpen: true,
+                openDelay: 2,
+                autoOpenOnMobile: false
+            }
+        },
+        tooltip: {
+            showTooltip: true,
+            tooltipMessage: 'Hi there 👋!',
+            tooltipBackgroundColor: '#1b5e20', // Darker green for contrast
+            tooltipTextColor: 'white',
+            tooltipFontSize: 16
+        },
+        customCSS: ``,
+        chatWindow: {
+            showTitle: true,
+            showAgentMessages: true,
+            title: 'DishyBot',
+            titleAvatarSrc: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/google-messages.svg',
+            welcomeMessage: 'Hi there! I’m Dishy, here to answer any questions you have 🌿✨',
+            errorMessage: 'Oops! Something went wrong. Please try again.',
+            backgroundColor: '#ffffff',
+            backgroundImage: '',
+            height: 500,
+            width: 320,
+            fontSize: 16,
+            starterPrompts: [
+                "What is Dishy?",
+                "How can you help my business?"
+            ],
+            starterPromptFontSize: 15,
+            clearChatOnReload: false,
+            sourceDocsTitle: 'Sources:',
+            renderHTML: true,
+            botMessage: {
+                backgroundColor: '#f7f8ff',
+                textColor: '#2a2a2a',
+                showAvatar: true,
+                avatarSrc: 'https://raw.githubusercontent.com/zahidkhawaja/langchain-chat-nextjs/main/public/parroticon.png'
+            },
+            userMessage: {
+                backgroundColor: '#00aa55', // Match button and theme green
+                textColor: '#ffffff',
+                showAvatar: true,
+                avatarSrc: 'https://raw.githubusercontent.com/zahidkhawaja/langchain-chat-nextjs/main/public/usericon.png'
+            },
+            textInput: {
+                placeholder: 'Type your question...',
+                backgroundColor: '#ffffff',
+                textColor: '#2a2a2a',
+                sendButtonColor: '#00aa55', // Match theme
+                maxChars: 50,
+                maxCharsWarningMessage: 'Please keep it under 50 characters.',
+                autoFocus: true,
+                sendMessageSound: true,
+                sendSoundLocation: 'send_message.mp3',
+                receiveMessageSound: true,
+                receiveSoundLocation: 'receive_message.mp3'
+            },
+            feedback: {
+                color: '#2a2a2a'
+            },
+            dateTimeToggle: {
+                date: true,
+                time: true
+            },
+            footer: {
+                textColor: '#2a2a2a',
+                text: 'Powered by',
+                company: 'QuestIQ',
+                companyLink: 'https://finn-oconnor1.github.io/questiq-website/#home'
+            }
+        }
+    }
+})
+</script>
+
+
+    </div>
+  </div>
+</section>
+<section id="contact">
+  <h2>Contact Us 📬</h2>
+  <p>We'd love to hear from you!</p>
+  <div class="contact-grid">
+    <div class="contact-box">
+      <h3>Email</h3>
+      <p><a href="mailto:finn@questiq.ai">finn@questiq.ai</a></p>
+    </div>
+    <div class="contact-box">
+      <h3>Phone</h3>
+      <p>+353 87 463 4990</p>
+    </div>
+    <div class="contact-box">
+      <h3>LinkedIn</h3>
+      <p><a href="https://linkedin.com/company/questiqai" target="_blank">Connect with us</a></p>
+    </div>
+  </div>
+</section>
+<footer>
+  <p>© 2025 QuestIQ.ai | <a href="mailto:finn@questiq.ai">finn@questiq.ai</a></p>
+</footer>
+<div class="bubbles"></div>
+<script>
+  const bubblesContainer = document.querySelector('.bubbles');
+  for (let i = 0; i < 25; i++) {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    const size = 30 + Math.random() * 60;
+    bubble.style.left = `${Math.random() * 100}vw`;
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+    bubble.style.animationDuration = `${10 + Math.random() * 15}s`;
+    bubble.style.animationDelay = `${Math.random() * 8}s`;
+    bubblesContainer.appendChild(bubble);
+  }
+  // Hero rectangle slide-in animation on load only
+  const rect = document.getElementById('hero-rect');
+  window.addEventListener('load', () => {
+    const L = rect.getTotalLength();
+    rect.style.strokeDasharray = L;
+    rect.style.strokeDashoffset = L;
+    rect.style.transition = "stroke-dashoffset 2s ease-out";
+    requestAnimationFrame(() => {
+      rect.style.strokeDashoffset = 0;
+    });
+  });
+</script>
+</body>
+</html>
