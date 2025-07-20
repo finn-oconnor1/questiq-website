@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>QuestIQ.ai</title>
+  <title>QuestIQ</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -278,7 +278,7 @@
 <nav>
   <div class="logo-container">
     <img src="QueryLoop_logo.png" alt="QuestIQ Logo">
-    <h2>QuestIQ.ai</h2>
+    <h2>QuestIQ</h2>
   </div>
   <ul>
     <li><a href="#home">Home</a></li>
@@ -330,28 +330,29 @@
 
 <section id="about">
   <div class="white-box fade-in">
-    <h2>What is QuestAI? 💬🚀</h2>
-    <p>QuestAI transforms your website into a smart, always-on assistant. Here's what it does:</p>
+    <h2>Benefits 🚀</h2>
+    <p>QuestIQ helps your business grow faster by automating the most time-consuming parts of customer interaction.</p>
     <div class="about-cards">
       <div class="about-card">
-        <h3>⚡ Instant, Smart Answers</h3>
-        <p>Deliver fast, accurate responses 24/7 with human-like AI conversations trained on your own data.</p>
+        <h3>💸 Save Time & Money</h3>
+        <p>Free up staff and reduce costs by letting AI handle repetitive questions 24/7.</p>
       </div>
       <div class="about-card">
-        <h3>🎯 Capture & Convert Leads</h3>
-        <p>Turn visitors into customers automatically through intelligent lead capture and qualification.</p>
+        <h3>📈 Boost Conversions</h3>
+        <p>Capture leads the moment they visit — no missed opportunities or waiting for responses.</p>
       </div>
       <div class="about-card">
-        <h3>📊 Advanced Insights</h3>
-        <p>Analyze visitor questions and behavior to improve content, understand needs, and drive growth.</p>
+        <h3>⚙️ Scale Customer Support</h3>
+        <p>Handle more inquiries with ease without hiring more agents or expanding your team.</p>
       </div>
       <div class="about-card">
-        <h3>🔗 Seamless Integration</h3>
-        <p>Connect easily with your CRM and marketing tools for enriched data and better targeting.</p>
+        <h3>📊 Learn What Customers Want</h3>
+        <p>Get insights into customer behavior and popular questions to refine your marketing.</p>
       </div>
     </div>
   </div>
 </section>
+
 
 <section id="demo">
   <div class="white-box">
@@ -363,38 +364,149 @@
       <li>🔎 See detailed question logs and performance insights</li>
     </ul>
     <div style="margin-top: 2rem;">
-      <script type="module">
-          import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
-          Chatbot.init({
-              chatflowid: "c06a1b52-54e1-4937-b0d6-5d5a3af5bd92",
-              apiHost: "https://querio.onrender.com",
-          })
-      </script>
+<script type="module">
+    import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
+    Chatbot.init({
+        chatflowid: "c06a1b52-54e1-4937-b0d6-5d5a3af5bd92",
+        apiHost: "https://querio.onrender.com",
+        theme: {
+            button: {
+                backgroundColor: '#1b5e20',
+                right: 20,
+                bottom: 20,
+                size: 48,
+                dragAndDrop: true,
+                iconColor: 'white',
+                customIconSrc: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/google-messages.svg',
+                autoWindowOpen: {
+                    autoOpen: true,
+                    openDelay: 2,
+                    autoOpenOnMobile: false
+                }
+            },
+            tooltip: {
+                showTooltip: true,
+                tooltipMessage: '👋 Hi there! Try out our chatbot here:',
+                tooltipBackgroundColor: '#1b5e20',
+                tooltipTextColor: 'white',
+                tooltipFontSize: 16
+            },
+            customCSS: ``,
+            chatWindow: {
+                showTitle: true,
+                showAgentMessages: true,
+                title: 'QuestIQ Assistant',
+                titleAvatarSrc: 'QueryLoop_logo.png',  // Use your actual logo path here
+                welcomeMessage: 'Hey there! How can I help you today?',
+                errorMessage: 'Hmm, something went wrong. Try again!',
+                backgroundColor: '#ffffff',
+                height: 600,
+                width: 400,
+                fontSize: 16,
+                starterPrompts: [
+                    "How does QuestIQ work?",
+                    "What features do you offer?",
+                    "Can I try a demo?"
+                ],
+                starterPromptFontSize: 15,
+                clearChatOnReload: false,
+                sourceDocsTitle: 'Sources:',
+                renderHTML: true,
+                botMessage: {
+                    backgroundColor: '#e6f7e9',
+                    textColor: '#1b5e20',
+                    showAvatar: true,
+                    avatarSrc: 'QueryLoop_logo.png'
+                },
+                userMessage: {
+                    backgroundColor: '#1b5e20',
+                    textColor: '#ffffff',
+                    showAvatar: true,
+                    avatarSrc: 'https://raw.githubusercontent.com/zahidkhawaja/langchain-chat-nextjs/main/public/usericon.png'
+                },
+                textInput: {
+                    placeholder: 'Ask anything...',
+                    backgroundColor: '#ffffff',
+                    textColor: '#2a2a2a',
+                    sendButtonColor: '#1b5e20',
+                    maxChars: 50,
+                    maxCharsWarningMessage: 'Try to keep it under 50 characters 😊',
+                    autoFocus: true,
+                    sendMessageSound: true,
+                    sendSoundLocation: 'send_message.wav',
+                    receiveMessageSound: true,
+                    receiveSoundLocation: 'receive_message.wav'
+                },
+                feedback: {
+                    color: '#1b5e20'
+                },
+                dateTimeToggle: {
+                    date: true,
+                    time: true
+                },
+                footer: {
+                    textColor: '#2a2a2a',
+                    text: 'Powered by',
+                    company: 'QuestIQ',
+                    companyLink: 'https://finn-oconnor1.github.io/questiq-website/'
+                }
+            }
+        }
+    })
+</script>
+
     </div>
   </div>
 </section>
+
+<section id="pricing">
+  <h2>Pricing</h2>
+  <div class="features" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+    <div class="feature-box">
+      <h3>Basic</h3>
+      <p style="font-size: 1.5rem; font-weight: bold; margin: 1rem 0;">$29/month</p>
+      <p>✔️ AI-powered FAQ automation</p>
+      <p>✔️ Lead capture</p>
+      <p>✔️ Basic support</p>
+    </div>
+    <div class="feature-box" style="border: 2px solid #1b5e20;">
+      <h3>Standard</h3>
+      <p style="font-size: 1.5rem; font-weight: bold; margin: 1rem 0;">$79/month</p>
+      <p>✔️ All Basic features</p>
+      <p>✔️ Advanced analytics</p>
+      <p>✔️ Priority support</p>
+    </div>
+    <div class="feature-box">
+      <h3>Premium</h3>
+      <p style="font-size: 1.5rem; font-weight: bold; margin: 1rem 0;">$149/month</p>
+      <p>✔️ All Standard features</p>
+      <p>✔️ Custom integrations</p>
+      <p>✔️ Dedicated account manager</p>
+    </div>
+  </div>
+</section>
+
 
 <section id="contact">
   <h2>Contact Us 📬</h2>
-  <p>We'd love to hear from you!</p>
-  <div class="contact-grid">
-    <div class="contact-box">
-      <h3>Email</h3>
-      <p><a href="mailto:finn@questiq.ai">finn@questiq.ai</a></p>
-    </div>
-    <div class="contact-box">
-      <h3>Phone</h3>
-      <p>+353 87 463 4990</p>
-    </div>
-    <div class="contact-box">
-      <h3>LinkedIn</h3>
-      <p><a href="https://linkedin.com/company/questiqai" target="_blank">Connect with us</a></p>
-    </div>
-  </div>
+  <p>Interested in a demo or have a question? Reach out below:</p>
+  <form style="max-width: 600px; margin: 2rem auto; display: grid; gap: 1rem;">
+    <input type="text" name="name" placeholder="Your name" required
+           style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;">
+    <input type="email" name="email" placeholder="Your email" required
+           style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;">
+    <textarea name="message" rows="5" placeholder="Your message"
+              style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;"></textarea>
+    <button type="submit"
+            style="padding: 1rem; background-color: #1b5e20; color: white; border: none; font-weight: bold; border-radius: 8px; cursor: pointer;">
+      Send Message
+    </button>
+  </form>
 </section>
 
+
 <footer>
-  <p>© 2025 QuestIQ.ai | <a href="mailto:finn@questiq.ai">finn@questiq.ai</a></p>
+  <p>© 2025 QuestIQ | <a href="mailto:finn@questiq.ai">finn@questiq.ai</a></p>
 </footer>
 
 <div class="bubbles"></div>
