@@ -2,19 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- iPhone safe area + modern viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>QuestIQ</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
+    :root{
+      --ink:#2a2a2a;
+      --green:#1b5e20;
+      --mint:#a8e6a3;
+      --accent:#00aa55;
+      --card-bg: rgba(255,255,255,0.92);
+      --shadow: 0 10px 30px rgba(0,0,0,0.10);
+      --ring: 0 0 0 8px rgba(0,170,85,0.08);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(-45deg, #ffffff, #a8e6a3);
+      background: linear-gradient(-45deg, #ffffff, var(--mint));
       background-size: 400% 400%;
       animation: gradientShift 20s ease infinite;
       overflow-x: hidden;
-      color: #2a2a2a;
+      color: var(--ink);
       position: relative;
     }
     @keyframes gradientShift {
@@ -22,23 +33,35 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
+    /* Respect iOS Reduce Motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; }
+    }
+
+    /* NAV */
     nav {
       position: fixed; top: 0; width: 100%; display: flex;
       justify-content: space-between; align-items: center;
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
-      padding: 1rem 2rem;
+      -webkit-backdrop-filter: blur(10px); /* iOS */
+      /* top / right / bottom / left with safe-area insets */
+      padding: calc(1rem + env(safe-area-inset-top)) calc(2rem + env(safe-area-inset-right)) 1rem calc(2rem + env(safe-area-inset-left));
       z-index: 10;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-    nav h2 { font-weight: 700; font-size: 1.5rem; }
+    nav h2 { font-weight: 700; font-size: 1.5rem; display:flex; align-items:center; gap:.5rem;}
     nav ul { list-style: none; display: flex; gap: 1.5rem; }
     nav ul li a {
-      text-decoration: none; font-weight: 500; color: #2a2a2a;
-      transition: color 0.3s;
+      text-decoration: none; font-weight: 500; color: var(--ink);
+      padding: .5rem .75rem;
+      border-radius: .6rem;
+      transition: color .2s, background .2s, transform .2s;
     }
-    nav ul li a:hover { color: #00aa55; }
+    nav ul li a:hover { color: var(--green); background: rgba(0,170,85,.08); transform: translateY(-1px); }
 
+    /* HERO */
     header {
       text-align: center;
       padding: 25vh 2rem 10vh;
@@ -48,33 +71,36 @@
     .hero-wrapper {
       display: inline-block;
       position: relative;
-      padding: 2rem;
+      padding: 2.4rem 2.2rem;
       border-radius: 2rem;
       overflow: hidden;
+      box-shadow: var(--ring);
+      background: rgba(255,255,255,0.55);
     }
     header h1 {
-      font-size: 3rem;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
       font-weight: 700;
-      margin-bottom: 1rem;
+      margin-bottom: .75rem;
       opacity: 0;
-      animation: fadeIn 2s ease forwards 1s;
+      animation: fadeIn 1.2s ease forwards .4s;
     }
     header p {
-      font-size: 1.2rem;
-      max-width: 600px;
+      font-size: 1.15rem;
+      max-width: 700px;
       margin: 0 auto;
       opacity: 0;
-      animation: fadeIn 2s ease forwards 2s;
+      animation: fadeIn 1.2s ease forwards .9s;
     }
     @keyframes fadeIn { to { opacity: 1; } }
 
     .hero-svg {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; opacity: 0;
-      animation: rectFadeIn 1.5s ease-out forwards 0.5s;
+      animation: rectFadeIn 1.2s ease-out forwards .25s;
     }
     @keyframes rectFadeIn { to { opacity: 1; } }
 
+    /* SECTIONS */
     section {
       padding: 5rem 2rem;
       max-width: 1200px;
@@ -85,62 +111,132 @@
     }
     section h2 {
       font-size: 2rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
+    }
+    .sub {
+      opacity:.8; max-width:780px; margin:0 auto 2.2rem; line-height:1.6;
     }
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .feature-box {
-      background: rgba(255,255,255,0.9);
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
-      text-align: center;
-    }
-    .feature-box:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-    }
-    .feature-box h3 {
-      margin-bottom: 0.8rem;
-      font-size: 1.4rem;
-      color: #1b5e20;
-    }
-    .feature-box p {
-      font-size: 1rem;
-      line-height: 1.6;
+    /* GRID/CARDS */
+    .grid { display:grid; gap:1.5rem; }
+    .cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+
+    @media (max-width: 1000px) {
+      .cols-3, .cols-2 { grid-template-columns: 1fr; }
     }
 
+    .card {
+      background: var(--card-bg);
+      border-radius: 1.2rem;
+      padding: 1.6rem;
+      box-shadow: var(--shadow);
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.12); }
+
+    .icon-pill {
+      display:inline-flex; align-items:center; justify-content:center;
+      width: 46px; height: 46px; border-radius: 12px;
+      background: radial-gradient(circle at 30% 30%, #dff7e6, #c3f0cf);
+      border: 1px solid rgba(0,170,85,.25);
+      box-shadow: inset 0 0 20px rgba(0,170,85,.12);
+      margin-bottom:.9rem;
+      font-size: 1.2rem;
+    }
+    .card h3 { font-size: 1.15rem; color: var(--green); margin-bottom:.4rem; }
+    .card p { opacity:.9; line-height:1.6; }
+
+    /* TIMELINE */
+    .timeline { text-align:left; }
+    .step {
+      display:grid; grid-template-columns: 36px 1fr; gap:.9rem; align-items:start;
+      padding: .8rem 0;
+    }
+    .step .dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent); margin-top:.35rem;
+      box-shadow: 0 0 0 6px rgba(0,170,85,.12);
+    }
+    .step h4 { margin:0; font-size:1.05rem; }
+    .step p { margin:.2rem 0 0; opacity:.9; }
+
+    /* METRICS */
+    .metrics { display:grid; gap:1rem; grid-template-columns: repeat(3, minmax(0,1fr)); margin-top:1.2rem;}
+    .metric { background:#ffffff; border:1px solid rgba(0,0,0,.05); border-radius:1rem; padding:1rem; box-shadow: var(--shadow); }
+    .metric .num { font-size:1.5rem; font-weight:700; color:var(--green); }
+    .metric .lbl { opacity:.75; font-size:.95rem; }
+
+    /* PRICING BOX */
     .white-box {
       background: rgba(255,255,255,0.95);
       border-radius: 1rem;
       padding: 2.5rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      margin-top: 3rem;
-      max-width: 900px;
+      box-shadow: var(--shadow);
+      margin-top: 1rem;
+      max-width: 980px;
       margin-left: auto;
       margin-right: auto;
       text-align: center;
     }
-    #about .white-box {
-      background: #1b5e20;
-      color: #fff;
+
+    /* CONTACT */
+    .contact-wrap { display:grid; gap:1.5rem; grid-template-columns: 1fr 1fr; align-items:stretch; }
+    .contact-card { background:#fff; border:1px solid rgba(0,0,0,.05); border-radius:1rem; box-shadow: var(--shadow); padding:1.4rem; text-align:left; }
+    .contact-card h3 { color:var(--green); margin-bottom:.5rem; font-size:1.15rem; }
+    .contact-card p { opacity:.85; }
+    .contact-miniform { display:grid; gap:.9rem; }
+    .input, .textarea {
+      padding: .9rem;
+      border-radius: .8rem;
+      border: 1px solid #dcdcdc;
+      background:#fff;
+      font-size: 1rem;
+      width: 100%;
+    }
+    .textarea { min-height: 130px; resize: vertical; }
+    .helper { font-size:.85rem; opacity:.7; }
+    .btn {
+      display:inline-block; padding:.9rem 1.1rem; border-radius: .8rem;
+      background: var(--green); color:#fff; text-decoration:none; font-weight:700;
+      border: none; cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 8px 20px rgba(27,94,32,.25);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(27,94,32,.32); }
+    .btn-ghost{ background: transparent; color: var(--green); border:1px solid rgba(27,94,32,.25); }
+    .btn.disabled, .chip[aria-disabled="true"] { pointer-events:none; cursor: default; opacity:.9; }
+
+    /* CHIPS (display-only in demo section) */
+    .chips { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.75rem; }
+    .chip {
+      padding:.45rem .7rem; border:1px solid rgba(27,94,32,.25);
+      border-radius: 999px; font-size:.9rem; user-select:none;
+      background: #fff; transition: transform .1s ease;
     }
 
+    /* Footer socials */
+    .footer-actions { display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:.75rem; }
+    .btn-social {
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.6rem .9rem; border-radius:.7rem; background:#ffffff;
+      color:var(--green); border:1px solid rgba(27,94,32,.25); text-decoration:none;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .btn-social:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0,0,0,.12); }
+
     footer {
-      background: #1b5e20;
+      background: var(--green);
       color: white;
       text-align: center;
       padding: 2rem 1rem;
     }
     footer a { color: #ffffff; text-decoration: underline; }
 
+    /* BUBBLES BG */
     .bubbles {
       position: fixed; bottom: 0; left: 0; width: 100%; height: 100%;
       overflow: hidden; pointer-events: none; z-index: 1;
@@ -163,104 +259,13 @@
       100% { transform: translateY(-200vh) scale(1.4); opacity: 0; }
     }
 
-    @media (max-width: 1000px) {
-      .features {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      }
-    }
+    .logo-container { display:flex; align-items:center; gap:.5rem; }
+    /* Rounded logo corners */
+    .logo-container img { height: 40px; width: auto; border-radius: 12px; } /* tweak here */
 
-    .contact-grid {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .contact-box {
-      background: rgba(255,255,255,0.95);
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      flex: 1 1 250px;
-      max-width: 300px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .contact-box:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-    }
-
-    .contact-box h3 {
-      margin-bottom: 0.8rem;
-      font-size: 1.4rem;
-      color: #1b5e20;
-    }
-
-    .contact-box p {
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-
-    .contact-box a {
-      color: #2a2a2a;
-      text-decoration: underline;
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .logo-container img {
-      height: 40px;
-      width: auto;
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-    }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .about-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .about-card {
-      background: white;
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .about-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
-    }
-
-    .about-card h3 {
-      margin-bottom: 0.8rem;
-      font-size: 1.3rem;
-      color: #1b5e20;
-    }
-
-    .about-card p {
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-
+    /* reveal */
+    .fade-in { opacity: 0; transform: translateY(40px); transition: opacity 1.2s ease-out, transform 1.2s ease-out; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <script>
@@ -277,14 +282,15 @@
 <body>
 <nav>
   <div class="logo-container">
-    <img src="QueryLoop_logo.png" alt="QuestIQ Logo">
+    <img src="QueryLoop_logo.png" alt="QuestIQ Logo" />
     <h2>QuestIQ</h2>
   </div>
   <ul>
     <li><a href="#home">Home</a></li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#about">About</a></li>
+    <li><a href="#about">Benefits</a></li>
     <li><a href="#demo">Demo</a></li>
+    <li><a href="#pricing">Pricing</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -292,7 +298,7 @@
 <header id="home">
   <div class="hero-wrapper">
     <h1>Smarter Websites. Instant Answers.</h1>
-    <p>Automate FAQs, engage visitors, and scale support with AI-powered agents designed for modern businesses.</p>
+    <p>AI agents that resolve FAQs, capture leads, and route complex issues — so your team can focus on high-value work.</p>
     <svg class="hero-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
       <rect id="hero-rect" x="4" y="4" width="calc(100% - 8px)" height="calc(100% - 8px)"
         rx="32" ry="32" fill="none" stroke-width="8" stroke="url(#grad)"/>
@@ -306,65 +312,140 @@
   </div>
 </header>
 
-<section id="features">
+<!-- FEATURES -->
+<section id="features" class="fade-in">
   <h2>Features</h2>
-  <div class="features">
-    <div class="feature-box">
-      <h3>AI Chatbot Integration</h3>
-      <p>Seamlessly integrate a smart assistant that works 24/7 to help your customers.</p>
+  <p class="sub">Everything you need to launch a reliable, on-brand assistant — powered by your content and tuned to your workflows.</p>
+
+  <div class="grid cols-3">
+    <div class="card">
+      <div class="icon-pill">🤝</div>
+      <h3>On-Brand Answers</h3>
+      <p>Grounded in your docs, website, and PDFs. Guardrails ensure tone and policies are always respected.</p>
     </div>
-    <div class="feature-box">
-      <h3>Custom Knowledge Base</h3>
-      <p>Train your bot on your specific business data for precise, on-brand answers.</p>
+    <div class="card">
+      <div class="icon-pill">🧠</div>
+      <h3>Multi-Source Knowledge</h3>
+      <p>Ingest URLs, files, and FAQs. Keep it fresh with scheduled re-crawls for always-current responses.</p>
     </div>
-    <div class="feature-box">
-      <h3>Analytics & Insights</h3>
-      <p>Monitor conversations, uncover trends, and improve customer experience.</p>
+    <div class="card">
+      <div class="icon-pill">📨</div>
+      <h3>Lead Capture & Handoff</h3>
+      <p>Collect emails, pipe hot leads to forms/CRM, and escalate to a human when needed — with full context.</p>
     </div>
-    <div class="feature-box">
-      <h3>Lightning-Fast Setup</h3>
-      <p>Launch your AI assistant in under 5 minutes, no coding required.</p>
+    <div class="card">
+      <div class="icon-pill">📊</div>
+      <h3>Analytics & Transcripts</h3>
+      <p>See what customers ask, identify gaps, and improve conversion with searchable chat logs and tags.</p>
+    </div>
+    <div class="card">
+      <div class="icon-pill">🔌</div>
+      <h3>Integrations</h3>
+      <p>Connect to tools you use (email/webhooks/Slack). Trigger automations from within conversations.</p>
+    </div>
+    <div class="card">
+      <div class="icon-pill">⚡</div>
+      <h3>No-Code Embed</h3>
+      <p>Drop-in widget loads fast, supports custom icons/colors, and works on desktop and mobile.</p>
     </div>
   </div>
 </section>
 
-<section id="about">
-  <div class="white-box fade-in">
-    <h2>Benefits 🚀</h2>
-    <p>QuestIQ helps your business grow faster by automating the most time-consuming parts of customer interaction.</p>
-    <div class="about-cards">
-      <div class="about-card">
-        <h3>💸 Save Time & Money</h3>
-        <p>Free up staff and reduce costs by letting AI handle repetitive questions 24/7.</p>
-      </div>
-      <div class="about-card">
-        <h3>📈 Boost Conversions</h3>
-        <p>Capture leads the moment they visit — no missed opportunities or waiting for responses.</p>
-      </div>
-      <div class="about-card">
-        <h3>⚙️ Scale Customer Support</h3>
-        <p>Handle more inquiries with ease without hiring more agents or expanding your team.</p>
-      </div>
-      <div class="about-card">
-        <h3>📊 Learn What Customers Want</h3>
-        <p>Get insights into customer behavior and popular questions to refine your marketing.</p>
-      </div>
+<!-- BENEFITS -->
+<section id="about" class="fade-in">
+  <h2>Benefits 🚀</h2>
+  <p class="sub">Reduce support load, capture more leads, and give visitors immediate, accurate answers — 24/7.</p>
+
+  <div class="grid cols-3">
+    <div class="card">
+      <div class="icon-pill">💸</div>
+      <h3>Lower Support Costs</h3>
+      <p>Automate repetitive queries and free your team to handle complex, revenue-impacting issues.</p>
+    </div>
+    <div class="card">
+      <div class="icon-pill">📈</div>
+      <h3>Higher Conversions</h3>
+      <p>Start conversations the moment intent appears. Qualify prospects and route them to the right flow.</p>
+    </div>
+    <div class="card">
+      <div class="icon-pill">🔒</div>
+      <h3>Safe by Design</h3>
+      <p>Answer limits, citations, and policy filters reduce hallucinations and keep responses on message.</p>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="num">-40–70%</div>
+      <div class="lbl">fewer repetitive emails</div>
+    </div>
+    <div class="metric">
+      <div class="num">2–3×</div>
+      <div class="lbl">more captured leads</div>
+    </div>
+    <div class="metric">
+      <div class="num">&lt;1 min</div>
+      <div class="lbl">median first response</div>
     </div>
   </div>
 </section>
 
+<!-- DEMO -->
+<section id="demo" class="fade-in">
+  <h2>Live Demo 🤖</h2>
+  <p class="sub">A quick peek at how it looks. The buttons below are just for show.</p>
 
-<section id="demo">
-  <div class="white-box">
-    <h2>Demo 🤖</h2>
-    <p>Try our AI bot live below and experience seamless automation in action. We also offer free trials to let you test the technology before committing.</p>
-    <ul style="margin-top:1.5rem; text-align:left; max-width:700px; margin-left:auto; margin-right:auto;">
-      <li>🚀 Free trial access to test your own data</li>
-      <li>⚡ Instant setup — no technical barriers</li>
-      <li>🔎 See detailed question logs and performance insights</li>
-    </ul>
-    <div style="margin-top: 2rem;">
-<script type="module">
+  <div class="grid cols-2" style="align-items:stretch;">
+    <!-- Non-interactive preview -->
+    <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+      <div>
+        <h3 style="margin-bottom:.8rem; color:var(--green);">Interactive Widget</h3>
+        <p style="opacity:.85;">Open the green chat bubble at the bottom-right to talk to the demo bot.</p>
+
+        <div class="chips" aria-hidden="true">
+          <span class="chip" aria-disabled="true">How does QuestIQ work?</span>
+          <span class="chip" aria-disabled="true">What do you integrate with?</span>
+          <span class="chip" aria-disabled="true">How is pricing calculated?</span>
+          <span class="chip" aria-disabled="true">Can I get a free trial?</span>
+        </div>
+      </div>
+
+      <div style="margin-top:1rem; display:flex; gap:.6rem; flex-wrap:wrap;">
+        <button type="button" class="btn disabled" aria-disabled="true" title="Display only">Launch demo</button>
+        <a href="#pricing" class="btn btn-ghost">See pricing</a>
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="card timeline">
+      <h3 style="margin-bottom:.8rem; color:var(--green);">How it works</h3>
+      <div class="step">
+        <div class="dot"></div>
+        <div>
+          <h4>1) Connect your content</h4>
+          <p>Point to your site, upload PDFs/FAQs, or paste key answers. We auto-index and keep it fresh.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="dot"></div>
+        <div>
+          <h4>2) Tune the assistant</h4>
+          <p>Set tone, forbidden topics, escalation rules, and lead capture fields. Add quick-reply buttons.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="dot"></div>
+        <div>
+          <h4>3) Embed & learn</h4>
+          <p>Drop one script on your site. Track questions, refine content, and watch conversions rise.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flowise chat bubble embed -->
+  <noscript><p style="text-align:center; margin-top:1rem;">Enable JavaScript to try the live demo.</p></noscript>
+  <script type="module">
     import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
     Chatbot.init({
         chatflowid: "c06a1b52-54e1-4937-b0d6-5d5a3af5bd92",
@@ -396,7 +477,7 @@
                 showTitle: true,
                 showAgentMessages: true,
                 title: 'QuestIQ Assistant',
-                titleAvatarSrc: 'QueryLoop_logo.png',  // Use your actual logo path here
+                titleAvatarSrc: 'QueryLoop_logo.png',
                 welcomeMessage: 'Hey there! How can I help you today?',
                 errorMessage: 'Hmm, something went wrong. Try again!',
                 backgroundColor: '#ffffff',
@@ -429,21 +510,16 @@
                     backgroundColor: '#ffffff',
                     textColor: '#2a2a2a',
                     sendButtonColor: '#1b5e20',
-                    maxChars: 50,
-                    maxCharsWarningMessage: 'Try to keep it under 50 characters 😊',
+                    maxChars: 80,
+                    maxCharsWarningMessage: 'Try to keep it concise 😊',
                     autoFocus: true,
                     sendMessageSound: true,
                     sendSoundLocation: 'send_message.wav',
                     receiveMessageSound: true,
                     receiveSoundLocation: 'receive_message.wav'
                 },
-                feedback: {
-                    color: '#1b5e20'
-                },
-                dateTimeToggle: {
-                    date: true,
-                    time: true
-                },
+                feedback: { color: '#1b5e20' },
+                dateTimeToggle: { date: true, time: true },
                 footer: {
                     textColor: '#2a2a2a',
                     text: 'Powered by',
@@ -453,66 +529,96 @@
             }
         }
     })
-</script>
-
-    </div>
-  </div>
+  </script>
+  <script nomodule>
+    console.warn('Your browser is out of date. The demo chat requires a modern browser.');
+  </script>
 </section>
 
-<section id="pricing">
+<!-- PRICING -->
+<section id="pricing" class="fade-in">
   <h2>Pricing</h2>
-  <div class="features" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-    <div class="feature-box">
-      <h3>Basic</h3>
-      <p style="font-size: 1.5rem; font-weight: bold; margin: 1rem 0;">$29/month</p>
-      <p>✔️ AI-powered FAQ automation</p>
-      <p>✔️ Lead capture</p>
-      <p>✔️ Basic support</p>
+  <div class="white-box">
+    <p style="max-width:720px; margin:0 auto 1rem;">
+      We don’t use fixed tiers. Your monthly fee is tailored to your <strong>company size</strong> and <strong>website traffic</strong>.
+    </p>
+
+    <div class="grid cols-3" style="margin-top:1.5rem;">
+      <div class="card">
+        <h3 style="color:var(--green);">Startup</h3>
+        <p>Up to ~10k visits/month, single domain, core workflows.</p>
+      </div>
+      <div class="card" style="outline:2px solid var(--green);">
+        <h3 style="color:var(--green);">Growing</h3>
+        <p>~10k–100k visits/month, multiple flows, analytics & webhooks.</p>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--green);">Enterprise</h3>
+        <p>100k+ visits/month, SSO/SLAs, advanced integrations & support.</p>
+      </div>
     </div>
-    <div class="feature-box" style="border: 2px solid #1b5e20;">
-      <h3>Standard</h3>
-      <p style="font-size: 1.5rem; font-weight: bold; margin: 1rem 0;">$79/month</p>
-      <p>✔️ All Basic features</p>
-      <p>✔️ Advanced analytics</p>
-      <p>✔️ Priority support</p>
-    </div>
-    <div class="feature-box">
-      <h3>Premium</h3>
-      <p style="font-size: 1.5rem; font-weight: bold; margin: 1rem 0;">$149/month</p>
-      <p>✔️ All Standard features</p>
-      <p>✔️ Custom integrations</p>
-      <p>✔️ Dedicated account manager</p>
-    </div>
+
+    <p style="margin-top:1.25rem;">
+      Tell us your monthly traffic and company size and we’ll send a fixed monthly quote tailored to you.
+    </p>
+    <a href="#contact" class="btn" style="margin-top:1rem;">Request a quote</a>
   </div>
 </section>
 
-
-<section id="contact">
+<!-- CONTACT (simplified) -->
+<section id="contact" class="fade-in">
   <h2>Contact Us 📬</h2>
-  <p>Interested in a demo or have a question? Reach out below:</p>
-  <form style="max-width: 600px; margin: 2rem auto; display: grid; gap: 1rem;">
-    <input type="text" name="name" placeholder="Your name" required
-           style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;">
-    <input type="email" name="email" placeholder="Your email" required
-           style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;">
-    <textarea name="message" rows="5" placeholder="Your message"
-              style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;"></textarea>
-    <button type="submit"
-            style="padding: 1rem; background-color: #1b5e20; color: white; border: none; font-weight: bold; border-radius: 8px; cursor: pointer;">
-      Send Message
-    </button>
-  </form>
-</section>
+  <p class="sub">Quick form on the right, or email <a href="mailto:finn@questiq.ai">finn@questiq.ai</a>.</p>
 
+  <div class="contact-wrap">
+    <div class="contact-card">
+      <h3>What to include</h3>
+      <p>To get an accurate quote, mention:</p>
+      <ul style="margin:.75rem 0 0 1rem; line-height:1.6; opacity:.9;">
+        <li>Your website URL</li>
+        <li>Approximate monthly traffic</li>
+        <li>Company size / key workflows</li>
+      </ul>
+      <div style="margin-top:1rem; display:flex; gap:.6rem; flex-wrap:wrap;">
+        <a class="btn-ghost" href="mailto:finn@questiq.ai?subject=QuestIQ%20enquiry%20—%20Intro%20call&body=Hi%20Finn%2C%0A%0AI%27d%20like%20to%20book%20a%2015%E2%80%91min%20intro%20call.%0A%0AWebsite%3A%20%0AMonthly%20traffic%3A%20%0ACompany%20size%3A%20%0A%0AThanks!" aria-label="Email to book a call">Book a 15-min intro call</a>
+        <a class="btn-ghost" href="#pricing">See pricing</a>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <h3>Send a message</h3>
+      <form id="contactForm" class="contact-miniform" onsubmit="return handleSubmit(event)">
+        <input id="name" name="name" class="input" type="text" placeholder="Your name" required />
+        <input id="email" name="email" class="input" type="email" placeholder="Email" required />
+        <textarea id="message" name="message" class="textarea" placeholder="What would you like to achieve? (e.g., automate FAQs, capture leads, integrations)"></textarea>
+        <div class="helper">Submitting opens your email client with a pre-filled message.</div>
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
+          <button type="submit" class="btn">Send message</button>
+          <a class="btn btn-ghost" href="mailto:finn@questiq.ai">Email us directly</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 
 <footer>
   <p>© 2025 QuestIQ | <a href="mailto:finn@questiq.ai">finn@questiq.ai</a></p>
+  <div class="footer-actions">
+    <a class="btn-social" href="https://www.linkedin.com/company/questiqai/" target="_blank" rel="noopener" aria-label="QuestIQ on LinkedIn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5ZM0 8.98h5V24H0V8.98ZM8.98 8.98H14v2.05h.08c.7-1.33 2.42-2.73 4.98-2.73C23.62 8.3 24 11.04 24 14.86V24h-5v-8.2c0-1.96-.04-4.48-2.73-4.48-2.73 0-3.15 2.13-3.15 4.33V24h-5V8.98Z" fill="currentColor"/>
+      </svg>
+      LinkedIn
+    </a>
+  </div>
 </footer>
 
 <div class="bubbles"></div>
 <script>
+  // Background bubbles — lighter on small screens for iPhone perf
   const bubblesContainer = document.querySelector('.bubbles');
-  for (let i = 0; i < 25; i++) {
+  const bubbleCount = (window.innerWidth < 480) ? 12 : 25;
+  for (let i = 0; i < bubbleCount; i++) {
     const bubble = document.createElement("div");
     bubble.className = "bubble";
     const size = 30 + Math.random() * 60;
@@ -535,6 +641,25 @@
       rect.style.strokeDashoffset = 0;
     });
   });
+
+  // Contact form -> mailto (simple)
+  function handleSubmit(e){
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    const subject = encodeURIComponent(`Website enquiry — ${name}`);
+    const body = encodeURIComponent(
+`Name: ${name}
+Email: ${email}
+
+Message:
+${message}`);
+
+    window.location.href = `mailto:finn@questiq.ai?subject=${subject}&body=${body}`;
+    return false;
+  }
 </script>
 </body>
 </html>
